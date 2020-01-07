@@ -4,11 +4,11 @@ console.debug(`📦 You are here → entering @titanium/updater`);
 const moment = require('moment');
 const semver = require('semver');
 const turbo = require('/turbo');
-console.debug(`turbo: ${JSON.stringify(turbo, null, 2)}`);
+// console.debug(`turbo: ${JSON.stringify(turbo, null, 2)}`);
 const Please = require('@titanium/please');
 
 export class Updater {
-	constructor({ url, timeout = 60000, id = Ti.App.id, platform = turbo.device.isIos ? 'iOS' : 'Android', version = Ti.App.version } = {}) {
+	constructor({ url, timeout = 60000, id = turbo.app_id, platform = turbo.isIos ? 'iOS' : 'Android', version = turbo.app_version } = {}) {
 		console.debug('📦 You are here →  @titanium/updater.constructor()');
 		if (!url) {
 			throw new Error('url is not defined for @titanium/updater');

@@ -44,7 +44,7 @@
 	"scripts": {
 		"test": "npm install --ignore-scripts && npm run list-files",
 		"list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
-		"prepublishOnly2": "git pull && bump"
+		"prepublishOnly": "git pull && bump"
 	},
 	"titanium": {
 		"type": "widget",
