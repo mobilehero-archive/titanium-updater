@@ -38,7 +38,8 @@
 		"lodash": "^4.17.15"
 	},
 	"peerDependencies": {
-		"semver": "^7.1.1"
+		"semver": "^7.1.1",
+		"@titanium/lottie": "^1.0.17"
 	},
 	"main": "./updater.js",
 	"scripts": {
