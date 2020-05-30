@@ -1,6 +1,6 @@
 {
 	"name": "@titanium/updater",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Titanium native mobile widget to check for app updates",
 	"keywords": [
 		"updates",
@@ -31,8 +31,7 @@
 		"type": "git",
 		"url": "github:brentonhouse/titanium-updater"
 	},
-	"dependencies": {
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@titanium/eslint-config": "0.0.11",
 		"eslint": "^7.1.0",
@@ -44,7 +43,7 @@
 	},
 	"main": "./updater.js",
 	"scripts": {
-		"test": "npm install --ignore-scripts && npm run list-files",
+		"test": "npm install --ignore-scripts && npm run list",
 		"list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
 		"prepublishOnly": "git pull && bump"
 	},
