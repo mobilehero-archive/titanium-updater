@@ -7,3 +7,8 @@ env:
   es6: true
   node: true
 extends: '@titanium'
+
+globals:
+  turbo: writable
+
+

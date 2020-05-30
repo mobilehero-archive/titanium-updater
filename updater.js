@@ -3,13 +3,13 @@ console.debug(`📦 You are here → entering @titanium/updater`);
 
 const moment = require('moment');
 const semver = require('semver');
-const turbo = require('/turbo');
+// const turbo = require('/turbo');
 // console.debug(`turbo: ${JSON.stringify(turbo, null, 2)}`);
 const Please = require('@titanium/please');
 
-export class Updater {
+class Updater {
 	constructor({ url, timeout = 60000, id = turbo.app_id, platform = turbo.isIos ? 'iOS' : 'Android', version = turbo.app_version } = {}) {
-		console.debug('📦 You are here →  @titanium/updater.constructor()');
+		turbo.trace('📦 You are here →  @titanium/updater.constructor()');
 		if (!url) {
 			throw new Error('url is not defined for @titanium/updater');
 		}
@@ -17,25 +17,25 @@ export class Updater {
 		this.id = id;
 		this.platform = platform;
 		this.version = version;
-		this.api = new Please({
+		this.please = new Please({
 			baseUrl: this.url,
 			timeout,
 		});
 
 	 }
 
-	 ensure({ minVersion, latestVersion } = {}) {
+	ensure({ minVersion, latestVersion } = {}) {
 		return new Promise(
 			(resolve, reject) => {
 
-				this.api.get()
+				this.please.get()
 					.then(result => {
-						console.debug('📦 You are here →  @titanium/updater.ensure.then');
-						console.debug(`result.json: ${JSON.stringify(result.json, null, 2)}`);
+						turbo.trace('📦 You are here →  @titanium/updater.ensure.then');
+						turbo.debug(`result.json: ${JSON.stringify(result.json, null, 2)}`);
 
 						const appInfo = _.find(result.json, { id: this.id, platform: this.platform });
 
-						console.debug(`appInfo: ${JSON.stringify(appInfo, null, 2)}`);
+						turbo.debug(`appInfo: ${JSON.stringify(appInfo, null, 2)}`);
 
 						let satisfied = true;
 						let mandatory = true;
@@ -50,7 +50,6 @@ export class Updater {
 							console.warn(`no app version info found for app: ${this.id} platform: ${this.platform}`);
 							return resolve();
 						}
-
 
 						if (minVersion) {
 							satisfied = semver.satisfies(semver.coerce(this.version), minVersion);
@@ -70,8 +69,8 @@ export class Updater {
 							mandatory = false;
 						}
 
-						console.error(`satisfied: ${satisfied}`);
-						console.error(`mandatory: ${mandatory}`);
+						turbo.debug(`satisfied: ${satisfied}`);
+						turbo.debug(`mandatory: ${mandatory}`);
 
 						console.warn(`appInfo: ${JSON.stringify(appInfo, null, 2)}`);
 
@@ -84,14 +83,14 @@ export class Updater {
 
 
 							turbo.events.on(`updater::update`, function handleEvent(e, args) {
-								console.debug(`📦 You are here → @titanium/updater handling event - updater::update`);
+								turbo.trace(`📦 You are here → @titanium/updater handling event - updater::update`);
 								turbo.events.off(`updater::update`, handleEvent);
 								Titanium.Platform.openURL(appInfo['install-url'] || appInfo['update-url']);
 								Alloy.close('update-required');
 								// return resolve();
 							});
 							turbo.events.on(`updater::ignored`, function handleEvent(e, args) {
-								console.debug(`📦 You are here → @titanium/updater handling event - updater::ignored`);
+								turbo.trace(`📦 You are here → @titanium/updater handling event - updater::ignored`);
 								turbo.events.off(`updater::ignored`, handleEvent);
 								Alloy.close('update-required');
 								return resolve();

@@ -1,7 +1,7 @@
 <Alloy>
 
 	<script>
-		console.debug( '🏷️  You are here → inside update-required' );
+		turbo.trace( '🏷️  You are here → inside update-required' );
 	</script>
 	<Window id="update-required" backgroundColor="#2e3f47" layout="composite">
 		<View width="100%" layout="vertical" height="size" >
@@ -11,7 +11,7 @@
 			</View>
 			<Label text="Special Delivery!" class="permission-title" top="0" />
 
-			<Label text="We've deliviered a shiny, new version of the app but we need you need to update the app in order to continue." class="permission-ask" />
+			<Label text="We've delivered a shiny, new version of the app but we need you need to update the app in order to continue." class="permission-ask" />
 
 			<Label class="permission-go" onClick="turbo.updater.update" />
 
