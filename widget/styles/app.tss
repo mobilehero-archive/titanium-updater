@@ -1,0 +1,67 @@
+
+
+".updater-go": {
+	"backgroundColor": "#c23838",
+	"borderRadius": "15",
+	"color": "white",
+	"height": 55,
+	"text": "Great! Let's do it!",
+	"textAlign": "center",
+	"font": {
+		"fontSize": 20,
+		"fontFamily": "SFProDisplay-Semibold"
+	},
+	"top": 75,
+	"width": "75%"
+
+},
+
+".updater-later": {
+	"color": "white",
+	"height": Ti.UI.SIZE,
+	"text": "No, maybe later",
+	"textAlign": "center",
+	"font": {
+		"fontSize": "17",
+		"fontFamily": "SFProText-Normal"
+	},
+	"top": 30,
+	"width": "70%"
+
+},
+
+".updater-ask": {
+	"color": "white",
+	"height": Ti.UI.SIZE,
+	"textAlign": "center",
+	"font": {
+		"fontSize": 20,
+		"fontFamily": "SFProText-Light"
+	},
+	"top": 30,
+	"width": "80%"
+	"message": "We've delivered a shiny, new version of the app but we need you need to update the app in order to continue."
+},
+
+".updater-title": {
+	"color": "white",
+	"height": Ti.UI.SIZE,
+	"textAlign": "center",
+	"font": {
+		"fontSize": 30,
+		"fontFamily": "SFProText-Black",
+		"fontWeight": "bold"
+	},
+	"top": 50,
+	"width": "80%",
+	"text": "Special Delivery"
+
+},
+
+".updater-lottie": {
+	"file": "~/animations/lottie-delivery.json",
+	"loop": true,
+	"autoStart": true,
+	"top": 0,
+	"height": turbo.HEIGHT_30,
+},

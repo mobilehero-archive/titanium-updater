@@ -3,19 +3,22 @@
 	<script>
 		turbo.trace( '🏷️  You are here → inside update-required' );
 	</script>
+
+	<style src="../styles/app.tss"></style>
+
 	<Window id="update-required" backgroundColor="#2e3f47" layout="composite">
-		<View width="100%" layout="vertical" height="size" >
+		<View width="100%" layout="vertical" height="size">
 
-			<View height="turbo.HEIGHT_30">
-				<AnimationView id="view_lottie" module="@titanium/lottie" file="~/animations/lottie-delivery.json" loop="true" autoStart="true" top="0"  />
-			</View>
-			<Label text="Special Delivery!" class="permission-title" top="0" />
+			<!-- <View height="turbo.HEIGHT_30"> -->
+			<AnimationView id="view_lottie" module="@titanium/lottie" class="updater-lottie" />
+			<!-- </View> -->
+			<Label class="updater-title" top="0" />
 
-			<Label text="We've delivered a shiny, new version of the app but we need you need to update the app in order to continue." class="permission-ask" />
+			<Label class="updater-ask" />
 
-			<Label class="permission-go" onClick="turbo.updater.update" />
+			<Label class="updater-go" onClick="turbo.updater.update" />
 
-			<Label class="permission-later" onClick="turbo.updater.ignore" if="$.args.optional" />
+			<Label class="updater-later" onClick="turbo.updater.ignore" if="$.args.optional" />
 
 		</View>
 
