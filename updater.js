@@ -59,6 +59,7 @@ class Updater {
 					const meetsRecommended = semver.satisfies(semver.coerce(this.version), appInfo.recommended);
 					// const meetsOptional = semver.satisfies(semver.coerce(this.version), appInfo.optional);
 
+					console.debug(`🦠  latestVersion: ${JSON.stringify(appInfo.latest, null, 2)}`);
 					console.debug(`🦠  meetsRequired: ${JSON.stringify(meetsRequired, null, 2)}`);
 					console.debug(`🦠  meetsRecommended: ${JSON.stringify(meetsRecommended, null, 2)}`);
 					// console.debug(`🦠  meetsOptional: ${JSON.stringify(meetsOptional, null, 2)}`);
