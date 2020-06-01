@@ -74,11 +74,18 @@ class Updater {
 
 					const release = _.find(appInfo.releases, { version: appInfo.latest });
 
-					turbo.events.on(`updater::update`, function handleEvent(e, args) {
+					turbo.events.on(`updater::update`, (e, args) => {
 						turbo.trace(`📦 You are here → @titanium/updater handling event - updater::update`);
-						turbo.events.off(`updater::update`, handleEvent);
-						Titanium.Platform.openURL(release['install-url']);
-						Alloy.close('update-required');
+						// turbo.events.off(`updater::update`, handleEvent);
+						const releaseUrl = release['install-url'];
+						// const releaseUrl = 'https://devblog.axway.com';
+						console.debug(`🦠  releaseUrl: ${JSON.stringify(releaseUrl, null, 2)}`);
+						Titanium.Platform.openURL(releaseUrl, {}, e => {
+							turbo.trace(`📦 You are here → @titanium/updater updater::update openURL handler`);
+							Alloy.open(turbo.SCREENS_LOADING);
+							// return resolve();
+						});
+						// Alloy.close('update-required');
 						// return resolve();
 					});
 					turbo.events.on(`updater::ignored`, function handleEvent(e, args) {

@@ -9,10 +9,10 @@
 	"textAlign": "center",
 	"font": {
 		"fontSize": 20,
-		"fontFamily": "SFProDisplay-Semibold"
+		"fontFamily": "SFProDisplay-Semibold",
 	},
 	"top": 75,
-	"width": turbo.WIDTH_75
+	"width": turbo.WIDTH_75,
 
 },
 
@@ -23,10 +23,10 @@
 	"textAlign": "center",
 	"font": {
 		"fontSize": "17",
-		"fontFamily": "SFProText-Normal"
+		"fontFamily": "SFProDisplay-Normal",
 	},
 	"top": 30,
-	"width": turbo.WIDTH_70
+	"width": turbo.WIDTH_70,
 
 },
 
@@ -36,11 +36,11 @@
 	"textAlign": "center",
 	"font": {
 		"fontSize": 20,
-		"fontFamily": "SFProText-Light"
+		"fontFamily": "SFProDisplay-Light",
 	},
 	"top": 30,
 	"width": turbo.WIDTH_80,
-	"message": "We've delivered a shiny, new version of the app but we need you need to update the app in order to continue."
+	"text": "We've delivered a shiny, new version of the app but we need you need to update the app in order to continue.",
 },
 
 ".updater-title": {
@@ -49,12 +49,12 @@
 	"textAlign": "center",
 	"font": {
 		"fontSize": 30,
-		"fontFamily": "SFProText-Black",
-		"fontWeight": "bold"
+		"fontFamily": "SFProDisplay-Black",
+		"fontWeight": "bold",
 	},
 	"top": 50,
 	"width": turbo.WIDTH_80,
-	"text": "Special Delivery"
+	"text": "Special Delivery",
 
 },
 
@@ -63,5 +63,4 @@
 	"loop": true,
 	"autoStart": true,
 	"top": 0,
-	"height": turbo.HEIGHT_30,
 },
