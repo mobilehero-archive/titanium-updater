@@ -1,7 +1,7 @@
 <Alloy>
 
 	<script>
-		turbo.trace( '🏷️  You are here → inside update-required' );
+		turbo.trace( '🏷️  you are here → inside update-required' );
 	</script>
 
 	<style src="../styles/app.tss"></style>

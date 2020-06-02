@@ -1,5 +1,5 @@
 /* eslint-disable promise/avoid-new */
-console.debug(`📦 You are here → entering @titanium/updater`);
+console.debug(`📦  you are here → entering @titanium/updater`);
 
 const moment = require('moment');
 const semver = require('./semver');
@@ -17,7 +17,7 @@ class Updater {
 		baseUrl,
 		// message = `We've delivered a shiny, new version of the app but we need you need to update the app in order to continue.`,
 	} = {}) {
-		turbo.trace('📦 You are here →  @titanium/updater.constructor()');
+		turbo.trace('📦  you are here →  @titanium/updater.constructor()');
 		if (!url && !baseUrl) {
 			throw new Error('@titanium/updater requires either baseUrl or url');
 		}
@@ -40,15 +40,16 @@ class Updater {
 	}
 
 	ensure() {
+		turbo.trace('📦  you are here →  @titanium/updater.ensure');
 		return new Promise((resolve, reject) => {
 			this.please
 				.get()
 				.then(result => {
-					turbo.trace('📦 You are here →  @titanium/updater.ensure.then');
-					turbo.debug(`result.json: ${JSON.stringify(result.json, null, 2)}`);
+					turbo.trace('📦  you are here →  @titanium/updater.ensure.then()');
+					turbo.debug(`🦠  result.json: ${JSON.stringify(result.json, null, 2)}`);
 
 					const appInfo = result.json || {};
-					turbo.debug(`appInfo: ${JSON.stringify(appInfo, null, 2)}`);
+					turbo.debug(`🦠  appInfo: ${JSON.stringify(appInfo, null, 2)}`);
 
 					if (!appInfo.latest) {
 						console.warn(`no app version info found for app: ${this.id} platform: ${this.platform}`);
@@ -76,13 +77,13 @@ class Updater {
 					const release = _.find(appInfo.releases, { version: appInfo.latest });
 
 					turbo.events.on(`updater::update`, (e, args) => {
-						turbo.trace(`📦 You are here → @titanium/updater handling event - updater::update`);
+						turbo.trace(`📦  you are here → @titanium/updater handling event - updater::update`);
 						// turbo.events.off(`updater::update`, handleEvent);
 						const releaseUrl = release['install-url'];
 						// const releaseUrl = 'https://devblog.axway.com';
 						console.debug(`🦠  releaseUrl: ${JSON.stringify(releaseUrl, null, 2)}`);
 						Titanium.Platform.openURL(releaseUrl, {}, e => {
-							turbo.trace(`📦 You are here → @titanium/updater updater::update openURL handler`);
+							turbo.trace(`📦  you are here → @titanium/updater updater::update openURL handler`);
 							Alloy.open(turbo.SCREENS_LOADING);
 							// return resolve();
 						});
@@ -90,7 +91,7 @@ class Updater {
 						// return resolve();
 					});
 					turbo.events.on(`updater::ignored`, function handleEvent(e, args) {
-						turbo.trace(`📦 You are here → @titanium/updater handling event - updater::ignored`);
+						turbo.trace(`📦  you are here → @titanium/updater handling event - updater::ignored`);
 						turbo.events.off(`updater::ignored`, handleEvent);
 						Alloy.close('update-required');
 						return resolve();
@@ -131,14 +132,14 @@ class Updater {
 					// 	console.error(`App version ${this.version} does not meet requirements of: ${desiredVersion}`);
 
 					// 	turbo.events.on(`updater::update`, function handleEvent(e, args) {
-					// 		turbo.trace(`📦 You are here → @titanium/updater handling event - updater::update`);
+					// 		turbo.trace(`📦  you are here → @titanium/updater handling event - updater::update`);
 					// 		turbo.events.off(`updater::update`, handleEvent);
 					// 		Titanium.Platform.openURL(appInfo['install-url'] || appInfo['update-url']);
 					// 		Alloy.close('update-required');
 					// 		// return resolve();
 					// 	});
 					// 	turbo.events.on(`updater::ignored`, function handleEvent(e, args) {
-					// 		turbo.trace(`📦 You are here → @titanium/updater handling event - updater::ignored`);
+					// 		turbo.trace(`📦  you are here → @titanium/updater handling event - updater::ignored`);
 					// 		turbo.events.off(`updater::ignored`, handleEvent);
 					// 		Alloy.close('update-required');
 					// 		return resolve();
@@ -159,12 +160,12 @@ class Updater {
 	}
 
 	update() {
-		turbo.trace(`📦 You are here → @titanium/updater.update()`);
+		turbo.trace(`📦  you are here → @titanium/updater.update()`);
 		turbo.events.fire(`updater::update`);
 	}
 
 	ignore() {
-		turbo.trace(`📦 You are here → @titanium/updater.ignore()`);
+		turbo.trace(`📦  you are here → @titanium/updater.ignore()`);
 		turbo.events.fire(`updater::ignored`);
 	}
 }
