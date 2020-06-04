@@ -35,6 +35,7 @@ class Updater {
 		this.please = new Please({
 			baseUrl: this.url,
 			timeout,
+			headers: { 'Cache-Control': 'no-cache' },
 		});
 		// this.message = message;
 	}
