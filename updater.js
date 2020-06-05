@@ -91,18 +91,17 @@ class Updater {
 				const install_url = release['install-url'];
 				// const releaseUrl = 'https://devblog.axway.com';
 				console.debug(`🦠  install_url: ${JSON.stringify(install_url, null, 2)}`);
-
+				Alloy.open(turbo.SCREENS_LOADING);
 				if (OS_IOS) {
 					Titanium.Platform.openURL(install_url, {}, e => {
 						turbo.trace(`📦  you are here → @titanium/updater updater::update openURL handler`);
-						Alloy.open(turbo.SCREENS_LOADING);
+						// Alloy.open(turbo.SCREENS_LOADING);
 						// return resolve();
 					});
 				} else {
-
 					Titanium.Platform.openURL(install_url, {}, e => {
 						turbo.trace(`📦  you are here → @titanium/updater updater::update openURL handler`);
-						Alloy.open(turbo.SCREENS_LOADING);
+						// Alloy.open(turbo.SCREENS_LOADING);
 					});
 
 					// Commenting out alternative Android install method for now.  Not working.
