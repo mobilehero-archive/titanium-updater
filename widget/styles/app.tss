@@ -35,12 +35,12 @@
 	"height": Ti.UI.SIZE,
 	"textAlign": "center",
 	"font": {
-		"fontSize": 20,
+		"fontSize": 21,
 		"fontFamily": "SFProDisplay-Light",
 	},
 	"top": 30,
 	"width": turbo.WIDTH_80,
-	"text": "We've delivered a shiny, new version of the app but we need you need to update the app in order to continue.",
+	"text": "We've delivered a shiny, new version of the app but we need you to update the app in order to continue.",
 },
 
 ".updater-title": {
