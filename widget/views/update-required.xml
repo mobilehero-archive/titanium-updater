@@ -6,8 +6,7 @@
 
 	<style src="../styles/app.tss"></style>
 
-	<Window id="update-required" backgroundColor="##4A4F54" layout="composite">
-		<absolute backgroundColor="##4A4F54" width="fill" height="fill" top="0">
+	<Window id="update-required" backgroundColor="#4A4F54" layout="composite">
 			<View width="100%" layout="vertical" height="size">
 
 				<View height="turbo.HEIGHT_30">
@@ -22,7 +21,6 @@
 				<Label class="updater-later" onClick="turbo.updater.ignore" if="$.args.optional" />
 
 			</View>
-		</absolute>
 	</Window>
 
 </Alloy>
