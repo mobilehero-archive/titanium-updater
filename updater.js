@@ -52,8 +52,6 @@ class Updater {
 				.debug(true)
 				.get();
 
-			// DEBUG: result
-			console.debug(`🦠  result: ${JSON.stringify(result, null, 2)}`);
 			turbo.trace('📦  you are here →  @titanium/updater.ensure.then()');
 			turbo.debug(`🦠  result.json: ${JSON.stringify(result.json, null, 2)}`);
 
