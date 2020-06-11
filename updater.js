@@ -60,7 +60,7 @@ class Updater {
 
 			if (!appInfo.latest) {
 				console.warn(`no app version info found for app: ${this.id} platform: ${this.platform}`);
-				return resolve();
+				return resolve(true);
 			}
 
 			const meetsRequired = semver.satisfies(semver.coerce(this.version), appInfo.required);
@@ -77,17 +77,16 @@ class Updater {
 
 				if (meetsRecommended) {
 					console.info(`App version ${this.version} meets recommendations of: ${appInfo.recommended}`);
-					return resolve();
+					return resolve(true);
 				}
 			}
 
 			const release = _.find(appInfo.releases, { version: appInfo.latest });
 
-			turbo.events.on(`updater::update`, async (e, args) => {
+			const handleUpdateEvent = async (e, args) => {
 				turbo.trace(`📦  you are here → @titanium/updater handling event - updater::update`);
-				// turbo.events.off(`updater::update`, handleEvent);
+				turbo.events.off('updater::update', handleUpdateEvent);
 				const install_url = release['install-url'];
-				// const releaseUrl = 'https://devblog.axway.com';
 				console.debug(`🦠  install_url: ${JSON.stringify(install_url, null, 2)}`);
 				Alloy.open(turbo.SCREENS_LOADING);
 				if (OS_IOS) {
@@ -97,122 +96,116 @@ class Updater {
 						// return resolve();
 					});
 				} else {
-					Titanium.Platform.openURL(install_url, {}, e => {
-						turbo.trace(`📦  you are here → @titanium/updater updater::update openURL handler`);
-						// Alloy.open(turbo.SCREENS_LOADING);
-					});
-
-					// Commenting out alternative Android install method for now.  Not working.
-
-					// try {
-
-
-					// 	const apk = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'update.apk');
-
-					// 	const apkPlease = new Please({
-					// 		baseUrl: install_url,
-					// 		timeout: this.timeout,
-					// 		headers: { 'Cache-Control': 'no-cache' },
-					// 		file:    apk,
-					// 	});
-
-					// 	await apkPlease.get();
-
-					// 	setTimeout(() => {
-					// 		let intent = Ti.Android.createIntent({});
-					// 		intent.putExtraUri('uri', apk.nativePath);
-
-					// 		intent = Ti.Android.createIntent({
-					// 			action: 'android.intent.action.INSTALL_PACKAGE',
-					// 			data:   intent.getStringExtra('uri'),
-					// 			flags:  Ti.Android.FLAG_GRANT_READ_URI_PERMISSION,
-					// 		});
-
-					// 		intent.putExtra('EXTRA_NOT_UNKNOWN_SOURCE', true);
-					// 		Ti.Android.currentActivity.startActivity(intent);
-
-					// 	}, 2500);
-					// } catch (error) {
-
-					// console.error(error);
-
-					// const alertNotice = Ti.UI.createAlertDialog({
-					// 	title:       'Auto-update failed',
-					// 	message:     'Auto-update failed. Please manually download and update via your browser',
-					// 	buttonNames: [ 'Download' ],
+					// Titanium.Platform.openURL(install_url, {}, e => {
+					// 	turbo.trace(`📦  you are here → @titanium/updater updater::update openURL handler`);
+					// 	// Alloy.open(turbo.SCREENS_LOADING);
 					// });
 
-					// alertNotice.addEventListener('click', async event => {
-					// 	if (event.index === 0) {
-					// 		Ti.Platform.openURL(appInfo.homepage);
-					// 	}
-					// });
-					// Ti.Analytics.featureEvent('update:fail');
-					// Alloy.Globals.ACA.logHandledException(e);
-					// alertNotice.show();
-					// }
+					try {
+
+
+						const apk = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'update.apk');
+
+						const apkPlease = new Please({
+							baseUrl: install_url,
+							timeout: this.timeout,
+							headers: { 'Cache-Control': 'no-cache' },
+							file:    apk,
+						});
+
+						await apkPlease.get();
+
+						const alertNotice = Ti.UI.createAlertDialog({
+							cancel:      1,
+							title:       'Update downloaded',
+							message:     'Please follow prompting to install the update.\n\nNOTE: You will have to manually relaunch the app after the update.',
+							buttonNames: [ 'Continue', 'Cancel'  ],
+						});
+
+						alertNotice.addEventListener('click', async event => {
+
+							if (event.index === event.source.cancel) {
+								turbo.trace(`📌  you are here → updater: update cancelled`);
+								alertNotice.hide();
+								// await Promise.delay(1000);
+
+								// Ti.Platform.openURL(appInfo.homepage);
+								turbo.events.fire('updater::ignore');
+								resolve();
+
+
+							} else {
+								turbo.events.off(`updater::ignore`, handleIgnoreEvent);
+								install_android_apk();
+							}
+
+						});
+						// Ti.Analytics.featureEvent('update:fail');
+						// Alloy.Globals.ACA.logHandledException(e);
+
+						turbo.trace(`📌  you are here → alertNotice.show()`);
+						alertNotice.show();
+
+						const install_android_apk = () => {
+							turbo.trace(`📌  you are here → updater.install_android_apk()`);
+							setTimeout(() => {
+								let intent = Ti.Android.createIntent({});
+								// intent.putExtraUri('uri', apk.nativePath);
+
+								intent = Ti.Android.createIntent({
+									action: 'android.intent.action.INSTALL_PACKAGE',
+									// data:   intent.getStringExtra('uri'),
+									data:   apk.nativePath,
+									flags:  Ti.Android.FLAG_GRANT_READ_URI_PERMISSION,
+								});
+
+								intent.putExtra('EXTRA_NOT_UNKNOWN_SOURCE', true);
+								Ti.Android.currentActivity.startActivity(intent);
+
+							}, 10);
+						};
+
+					} catch (error) {
+
+						console.error(error);
+
+						const alertNotice = Ti.UI.createAlertDialog({
+							title:       'Auto-update failed',
+							message:     'Auto-update failed. Please manually download and update via your browser',
+							buttonNames: [ 'Download' ],
+						});
+
+						alertNotice.addEventListener('click', async event => {
+							if (event.index === 0) {
+								Ti.Platform.openURL(appInfo.homepage);
+							}
+							alertNotice.hide();
+						});
+						Ti.Analytics.featureEvent('update:fail');
+						Alloy.Globals.ACA.logHandledException(e);
+						alertNotice.show();
+					}
 				}
 
 				// Alloy.close('update-required');
 				// return resolve();
-			});
-			turbo.events.on(`updater::ignored`, function handleEvent(e, args) {
-				turbo.trace(`📦  you are here → @titanium/updater handling event - updater::ignored`);
-				turbo.events.off(`updater::ignored`, handleEvent);
+			};
+
+			const handleIgnoreEvent = async (e, args) => {
+				turbo.trace(`📦  you are here → @titanium/updater handling event - updater::ignore`);
+				turbo.events.off(`updater::ignore`, handleIgnoreEvent);
+				turbo.events.off('updater::update', handleUpdateEvent);
 				Alloy.close('update-required');
+				Alloy.close(turbo.SCREENS_LOADING);
 				return resolve();
-			});
+			};
+
+
+			turbo.events.on('updater::ignore', handleIgnoreEvent);
+			turbo.events.on('updater::update', handleUpdateEvent);
 
 			Alloy.open('update-required', { optional: meetsRequired, message: this.message });
-			// return reject(new Error(`version ${this.version} does not meet requirements of: ${info.min}`));
 
-			// if (minVersion) {
-			// 	satisfied = semver.satisfies(semver.coerce(this.version), minVersion);
-			// 	mandatory = !satisfied;
-			// 	desiredVersion = minVersion;
-			// } else if (appInfo.min) {
-			// 	satisfied = semver.gte(semver.coerce(this.version), appInfo.min);
-			// 	mandatory = !satisfied;
-			// 	desiredVersion = appInfo.min;
-			// }
-
-			// if (satisfied && latestVersion) {
-			// 	satisfied = semver.gte(semver.coerce(this.version), appInfo.latest);
-			// 	mandatory = false;
-			// } else if (satisfied && appInfo.latest) {
-			// 	satisfied = semver.gte(semver.coerce(this.version), appInfo.latest);
-			// 	mandatory = false;
-			// }
-
-			// turbo.debug(`satisfied: ${satisfied}`);
-			// turbo.debug(`mandatory: ${mandatory}`);
-
-			// console.warn(`appInfo: ${JSON.stringify(appInfo, null, 2)}`);
-
-			// // if (semver.satisfies(this.version, info.min)) {
-			// if (satisfied) {
-			// 	console.info(`App version ${this.version} meets requirements of: ${desiredVersion}`);
-			// 	return resolve();
-			// } else {
-			// 	console.error(`App version ${this.version} does not meet requirements of: ${desiredVersion}`);
-
-			// 	turbo.events.on(`updater::update`, function handleEvent(e, args) {
-			// 		turbo.trace(`📦  you are here → @titanium/updater handling event - updater::update`);
-			// 		turbo.events.off(`updater::update`, handleEvent);
-			// 		Titanium.Platform.openURL(appInfo['install-url'] || appInfo['update-url']);
-			// 		Alloy.close('update-required');
-			// 		// return resolve();
-			// 	});
-			// 	turbo.events.on(`updater::ignored`, function handleEvent(e, args) {
-			// 		turbo.trace(`📦  you are here → @titanium/updater handling event - updater::ignored`);
-			// 		turbo.events.off(`updater::ignored`, handleEvent);
-			// 		Alloy.close('update-required');
-			// 		return resolve();
-			// 	});
-
-			// 	Alloy.open('update-required', {optional: !mandatory, message: this.message});
-			// 	// return reject(new Error(`version ${this.version} does not meet requirements of: ${info.min}`));
-			// }
 		})
 			.catch(error => {
 				console.error('⛔ → Error:  Error occurred in @titanium/updater.ensure()');
@@ -221,7 +214,6 @@ class Updater {
 				// resolve();
 				// reject(error);
 			});
-		// });
 	}
 
 	update() {
@@ -231,7 +223,7 @@ class Updater {
 
 	ignore() {
 		turbo.trace(`📦  you are here → @titanium/updater.ignore()`);
-		turbo.events.fire(`updater::ignored`);
+		turbo.events.fire(`updater::ignore`);
 	}
 }
 
