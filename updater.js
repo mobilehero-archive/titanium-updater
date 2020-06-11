@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 /* eslint-disable promise/avoid-new */
 console.debug(`📦  you are here → entering @titanium/updater`);
 
@@ -49,7 +50,7 @@ class Updater {
 		turbo.trace('📦  you are here →  @titanium/updater.ensure');
 		return new Promise(async (resolve, reject) => {
 			const result = await this.appInfoPlease
-				.debug(true)
+				.debug(turbo.VERBOSE_MODE)
 				.get();
 
 			turbo.trace('📦  you are here →  @titanium/updater.ensure.then()');
