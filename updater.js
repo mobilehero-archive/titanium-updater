@@ -38,7 +38,10 @@ class Updater {
 
 		if (!url) {
 			this.url = `${this.baseUrl}/${this.id}/${this.platform_lower}/app-channel-${this.channel}.json`;
-			this.url_fallback = `${this.baseUrl}/${this.id}/${this.platform_lower}/app-channel-release.json`;
+			if (this.channel !== 'release') {
+				this.url_fallback = `${this.baseUrl}/${this.id}/${this.platform_lower}/app-channel-release.json`;
+			}
+
 		}
 
 		this.appInfoPlease = new Please({
