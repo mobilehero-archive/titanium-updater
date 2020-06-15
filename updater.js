@@ -20,6 +20,7 @@ class Updater {
 		platform = turbo.os_name_full,
 		version = turbo.app_version,
 		baseUrl,
+		channel = 'release',
 		// message = `We've delivered a shiny, new version of the app but we need you need to update the app in order to continue.`,
 	} = {}) {
 		turbo.trace('📦  you are here →  @titanium/updater.constructor()');
@@ -33,9 +34,11 @@ class Updater {
 		this.version = version;
 		this.timeout = timeout;
 		this.platform_lower = platform.toLowerCase();
+		this.channel = channel;
 
 		if (!url) {
-			this.url = `${this.baseUrl}/${this.id}/${this.platform_lower}/app-info.json`;
+			this.url = `${this.baseUrl}/${this.id}/${this.platform_lower}/app-channel-${this.channel}.json`;
+			this.url_fallback = `${this.baseUrl}/${this.id}/${this.platform_lower}/app-channel-release.json`;
 		}
 
 		this.appInfoPlease = new Please({
@@ -46,12 +49,30 @@ class Updater {
 		// this.message = message;
 	}
 
-	async ensure() {
+	async ensure({ recommended = true, optional = false } = {}) {
 		turbo.trace('📦  you are here →  @titanium/updater.ensure');
 		return new Promise(async (resolve, reject) => {
-			const result = await this.appInfoPlease
-				.debug(turbo.VERBOSE_MODE)
-				.get();
+			let result;
+
+			try {
+				result = await this.appInfoPlease
+					.debug(turbo.VERBOSE_MODE)
+					.get();
+			} catch (error) {
+				turbo.trace(`📌  you are here → updater.appInfoPlease.catch`);
+				turbo.debug(`🦠  error: ${JSON.stringify(error, null, 2)}`);
+
+				if (this.url_fallback) {
+					result = await this.appInfoPlease
+						.url(this.url_fallback)
+						.debug(turbo.VERBOSE_MODE)
+						.get();
+				} else {
+					throw error;
+				}
+
+			}
+
 
 			turbo.trace('📦  you are here →  @titanium/updater.ensure.then()');
 
@@ -65,20 +86,29 @@ class Updater {
 
 			const meetsRequired = semver.satisfies(semver.coerce(this.version), appInfo.required);
 			const meetsRecommended = semver.satisfies(semver.coerce(this.version), appInfo.recommended);
-			// const meetsOptional = semver.satisfies(semver.coerce(this.version), appInfo.optional);
+			const meetsOptional = semver.gte(semver.coerce(this.version), appInfo.latest);
 
 			console.debug(`🦠  latestVersion: ${JSON.stringify(appInfo.latest, null, 2)}`);
 			console.debug(`🦠  meetsRequired: ${JSON.stringify(meetsRequired, null, 2)}`);
 			console.debug(`🦠  meetsRecommended: ${JSON.stringify(meetsRecommended, null, 2)}`);
-			// console.debug(`🦠  meetsOptional: ${JSON.stringify(meetsOptional, null, 2)}`);
+			console.debug(`🦠  meetsOptional: ${JSON.stringify(meetsOptional, null, 2)}`);
 
 			if (meetsRequired) {
 				console.info(`App version ${this.version} meets requirements of: ${appInfo.required}`);
 
-				if (meetsRecommended) {
+				if (recommended && meetsRecommended) {
 					console.info(`App version ${this.version} meets recommendations of: ${appInfo.recommended}`);
+
+					if (optional && meetsOptional) {
+						console.info(`App version ${this.version} meets optional updates of: >=${appInfo.latest}`);
+						return resolve(true);
+					} else if (! optional) {
+						return resolve(true);
+					}
+				} else if (! recommended) {
 					return resolve(true);
 				}
+
 			}
 
 			const release = _.find(appInfo.releases, { version: appInfo.latest });
