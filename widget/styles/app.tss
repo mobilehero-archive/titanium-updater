@@ -38,7 +38,7 @@
 		"fontSize": 21,
 		"fontFamily": "SFProDisplay-Light",
 	},
-	"top": 30,
+	"top": 25,
 	"width": turbo.WIDTH_80,
 	"text": "We've delivered a shiny, new version of the app but we need you to update the app in order to continue.",
 },
@@ -48,15 +48,30 @@
 	"height": Ti.UI.SIZE,
 	"textAlign": "center",
 	"font": {
-		"fontSize": 30,
+		"fontSize": 25,
 		"fontFamily": "SFProDisplay-Black",
 		"fontWeight": "bold",
 	},
-	"top": 50,
+	"top": 40,
 	"width": turbo.WIDTH_80,
 	"text": "Special Delivery",
 
 },
+
+".updater-version": {
+	"color": "white",
+	"height": Ti.UI.SIZE,
+	"textAlign": "center",
+	"font": {
+		"fontSize": 22,
+		"fontFamily": "SFProDisplay-Medium",
+		"fontWeight": "bold",
+	},
+	"top": 15,
+	"width": turbo.WIDTH_80,
+
+},
+
 
 ".updater-lottie": {
 	"file": "~/animations/lottie-delivery.json",

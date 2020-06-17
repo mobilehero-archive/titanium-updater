@@ -91,6 +91,7 @@ class Updater {
 			const meetsRecommended = semver.satisfies(semver.coerce(this.version), appInfo.recommended);
 			const meetsOptional = semver.gte(semver.coerce(this.version), appInfo.latest);
 
+			console.debug(`🦠  currentVersion: ${JSON.stringify(this.version, null, 2)}`);
 			console.debug(`🦠  latestVersion: ${JSON.stringify(appInfo.latest, null, 2)}`);
 			console.debug(`🦠  meetsRequired: ${JSON.stringify(meetsRequired, null, 2)}`);
 			console.debug(`🦠  meetsRecommended: ${JSON.stringify(meetsRecommended, null, 2)}`);
@@ -135,7 +136,6 @@ class Updater {
 					// });
 
 					try {
-
 
 						const apk = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'update.apk');
 
@@ -237,7 +237,7 @@ class Updater {
 			turbo.events.on('updater::ignore', handleIgnoreEvent);
 			turbo.events.on('updater::update', handleUpdateEvent);
 
-			Alloy.open('update-required', { optional: meetsRequired, message: this.message });
+			Alloy.open('update-required', { optional: meetsRequired, message: this.message, version: release.version });
 
 		})
 			.catch(error => {

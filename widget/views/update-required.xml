@@ -2,6 +2,9 @@
 
 	<script>
 		turbo.trace( '🏷️  you are here → inside update-required' );
+
+		$.args.version = $.args.version || '';
+
 	</script>
 
 	<style src="../styles/app.tss"></style>
@@ -13,6 +16,8 @@
 					<AnimationView id="view_lottie" module="@titanium/lottie" class="updater-lottie" />
 				</View>
 				<Label class="updater-title" top="0" />
+
+				<Label class="updater-version" text="$.args.version" />
 
 				<Label class="updater-ask" />
 
