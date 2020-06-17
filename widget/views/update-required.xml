@@ -1,12 +1,12 @@
-<Alloy>
+<alloy>
 
 	<script>
-		turbo.trace( '🏷️  you are here → inside update-required' );
+		turbo.trace( '🏷️  you are here → inside @titanium/updater.update-required' );
 
 		$.version_text = '';
-		if( $.args.version ){
+		if ( $.args.version ) {
 			$.version_text = `v${$.args.version}`;
-			if( $.args.channel && $.args.channel !== 'release'){
+			if ( $.args.channel && $.args.channel !== 'release' ) {
 				$.version_text += ` (${$.args.channel})`
 			}
 		}
@@ -15,23 +15,28 @@
 
 	<style src="../styles/app.tss"></style>
 
-	<Window id="update-required" backgroundColor="#4A4F54" layout="composite">
-			<View width="100%" layout="vertical" height="size">
+	<window id="update-required" backgroundColor="#4A4F54" layout="composite">
 
-				<View height="turbo.HEIGHT_30">
-					<AnimationView id="view_lottie" module="@titanium/lottie" class="updater-lottie" />
-				</View>
-				<Label class="updater-title" top="0" />
+		<scroll-view height="size">
 
-				<Label class="updater-version" text="$.version_text" />
+			<absolute height="turbo.HEIGHT_30">
+				<AnimationView id="view_lottie" module="@titanium/lottie" class="updater-lottie" />
+			</absolute>
 
-				<Label class="updater-ask" />
+			<label class="updater-title" top="0" />
 
-				<Label class="updater-go" onClick="turbo.updater.update" />
+			<label class="updater-version" text="$.version_text" />
 
-				<Label class="updater-later" onClick="turbo.updater.ignore" if="$.args.optional" />
+			<label class="updater-ask" />
 
-			</View>
-	</Window>
+			<label class="updater-go" onClick="turbo.updater.update" />
 
-</Alloy>
+			<label class="updater-later" onClick="turbo.updater.ignore" if="$.args.optional" />
+
+			<view id="bottom-spacer" height="100" />
+
+		</scroll-view>
+
+	</window>
+
+</alloy>
