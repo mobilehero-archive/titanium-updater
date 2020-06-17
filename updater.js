@@ -47,7 +47,10 @@ class Updater {
 		this.appInfoPlease = new Please({
 			baseUrl: this.url,
 			timeout,
-			headers: { 'Cache-Control': 'no-cache' },
+			headers: {
+				'Cache-Control':   'no-cache',
+				'Accept-Encoding': 'identity',
+			},
 		});
 		// this.message = message;
 	}
