@@ -3,7 +3,13 @@
 	<script>
 		turbo.trace( '🏷️  you are here → inside update-required' );
 
-		$.args.version = $.args.version || '0.0.0';
+		$.version_text = '';
+		if( $.args.version ){
+			$.version_text = `v${$.args.version}`;
+			if( $.args.channel && $.args.channel !== 'release'){
+				$.version_text += ` ($.args.channel)`
+			}
+		}
 
 	</script>
 
@@ -17,7 +23,7 @@
 				</View>
 				<Label class="updater-title" top="0" />
 
-				<Label class="updater-version" text="v$.args.version" />
+				<Label class="updater-version" text="$.version_text" />
 
 				<Label class="updater-ask" />
 

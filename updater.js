@@ -237,7 +237,7 @@ class Updater {
 			turbo.events.on('updater::ignore', handleIgnoreEvent);
 			turbo.events.on('updater::update', handleUpdateEvent);
 
-			Alloy.open('update-required', { optional: meetsRequired, message: this.message, version: release.version });
+			Alloy.open('update-required', { optional: meetsRequired, message: this.message, version: release.version, channel: this.channel });
 
 		})
 			.catch(error => {
