@@ -122,6 +122,7 @@ class Updater {
 				turbo.events.off('updater::update', handleUpdateEvent);
 				const install_url = release['install-url'];
 				console.debug(`🦠  install_url: ${JSON.stringify(install_url, null, 2)}`);
+				Alloy.close('update-required');
 				Alloy.open(turbo.SCREENS_LOADING);
 				if (OS_IOS) {
 					Titanium.Platform.openURL(install_url, {}, e => {
