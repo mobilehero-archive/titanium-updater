@@ -194,6 +194,7 @@ class Updater {
 									// data:   intent.getStringExtra('uri'),
 									data:   apk.nativePath,
 									flags:  Ti.Android.FLAG_GRANT_READ_URI_PERMISSION,
+									type: 'application/vnd.android.package-archive',
 								});
 
 								intent.putExtra('EXTRA_NOT_UNKNOWN_SOURCE', true);
