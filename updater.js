@@ -122,28 +122,30 @@ class Updater {
 
 			const handleUpdateEvent = async (e, args) => {
 				turbo.trace(`📦  you are here → @titanium/updater handling event - updater::update`);
+
+				// Open homepage as possible workaround for possible Android issues
+				if ($.args.openHomePage) {
+					Ti.Platform.openURL(appInfo.homepage);
+					if (meetsRequired) {
+						Alloy.close('update-required');
+					}
+					return;
+				}
+
 				turbo.events.off('updater::update', handleUpdateEvent);
 				const install_url = release['install-url'];
 				console.debug(`🦠  install_url: ${JSON.stringify(install_url, null, 2)}`);
+
 				Alloy.close('update-required');
-
-				// close loading if optional update?
-
-				// if ($.args.openHomePage) {
-				// 	Ti.Platform.openURL(appInfo.homepage);
-				// }
-
-				Alloy.open(turbo.SCREENS_LOADING);
+				turbo.openLoadingScreen();
 				if (OS_IOS) {
 					Titanium.Platform.openURL(install_url, {}, e => {
 						turbo.trace(`📦  you are here → @titanium/updater updater::update openURL handler`);
-						// Alloy.open(turbo.SCREENS_LOADING);
-						// return resolve();
 					});
 				} else {
 					// Titanium.Platform.openURL(install_url, {}, e => {
 					// 	turbo.trace(`📦  you are here → @titanium/updater updater::update openURL handler`);
-					// 	// Alloy.open(turbo.SCREENS_LOADING);
+					// 	turbo.openLoadingScreen();
 					// });
 
 					try {
@@ -196,12 +198,13 @@ class Updater {
 								let intent = Ti.Android.createIntent({});
 								// intent.putExtraUri('uri', apk.nativePath);
 
+								turbo.debug(`🦠  apk.nativePath: ${JSON.stringify(apk.nativePath, null, 2)}`);
 								intent = Ti.Android.createIntent({
 									action: 'android.intent.action.INSTALL_PACKAGE',
 									// data:   intent.getStringExtra('uri'),
 									data:   apk.nativePath,
 									flags:  Ti.Android.FLAG_GRANT_READ_URI_PERMISSION,
-									type: 'application/vnd.android.package-archive',
+									type:   'application/vnd.android.package-archive',
 								});
 
 								intent.putExtra('EXTRA_NOT_UNKNOWN_SOURCE', true);
@@ -241,7 +244,7 @@ class Updater {
 				turbo.events.off(`updater::ignore`, handleIgnoreEvent);
 				turbo.events.off('updater::update', handleUpdateEvent);
 				Alloy.close('update-required');
-				Alloy.close(turbo.SCREENS_LOADING);
+				turbo.closeLoadingScreen();
 				return resolve();
 			};
 
