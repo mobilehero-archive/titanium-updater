@@ -33,7 +33,7 @@ class Updater {
 		this.platform = platform;
 		this.version = version;
 		this.timeout = timeout;
-		this.platform_lower = platform.toLowerCase();
+		this.platform_lower = turbo.os_name;
 		this.channel = channel;
 
 		if (!url) {
