@@ -158,6 +158,7 @@ class Updater {
 
 					turbo.trace(`📌  you are here → alertNotice.show()`);
 					alertNotice.show();
+					return;
 
 				}
 
