@@ -126,6 +126,13 @@ class Updater {
 				const install_url = release['install-url'];
 				console.debug(`🦠  install_url: ${JSON.stringify(install_url, null, 2)}`);
 				Alloy.close('update-required');
+
+				// close loading if optional update?
+
+				// if ($.args.openHomePage) {
+				// 	Ti.Platform.openURL(appInfo.homepage);
+				// }
+
 				Alloy.open(turbo.SCREENS_LOADING);
 				if (OS_IOS) {
 					Titanium.Platform.openURL(install_url, {}, e => {
