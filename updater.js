@@ -150,7 +150,7 @@ class Updater {
 							Ti.Platform.openURL(appInfo.homepage);
 							if (meetsRequired) {
 								Alloy.close('update-required');
-								return resolve(true);
+								return resolve();
 							}
 						}
 
