@@ -55,8 +55,13 @@ class Updater {
 		// this.message = message;
 	}
 
-	async ensure({ recommended = true, optional = false } = {}) {
+	async ensure({ recommended = true, optional = false, openHomePage = false } = {}) {
 		turbo.trace('📦  you are here →  @titanium/updater.ensure');
+
+		turbo.debug(`🦠  recommended: ${JSON.stringify(recommended, null, 2)}`);
+		turbo.debug(`🦠  optional: ${JSON.stringify(optional, null, 2)}`);
+		turbo.debug(`🦠  openHomePage: ${JSON.stringify(openHomePage, null, 2)}`);
+
 		return new Promise(async (resolve, reject) => {
 			let result;
 
@@ -124,12 +129,36 @@ class Updater {
 				turbo.trace(`📦  you are here → @titanium/updater handling event - updater::update`);
 
 				// Open homepage as possible workaround for possible Android issues
-				if ($.args.openHomePage) {
-					Ti.Platform.openURL(appInfo.homepage);
-					if (meetsRequired) {
-						Alloy.close('update-required');
-					}
-					return;
+				if (openHomePage) {
+
+					const alertNotice = Ti.UI.createAlertDialog({
+						cancel:      1,
+						title:       'Updated Version',
+						message:     'This will open the web page where you can download and install the latest version of the app.',
+						buttonNames: [ 'Continue', 'Cancel'  ],
+					});
+
+					alertNotice.addEventListener('click', async event => {
+
+						if (event.index === event.source.cancel) {
+							turbo.trace(`📌  you are here → updater: update cancelled`);
+							if (meetsRequired) {
+								Alloy.close('update-required');
+								return resolve();
+							}
+						} else {
+							Ti.Platform.openURL(appInfo.homepage);
+							if (meetsRequired) {
+								Alloy.close('update-required');
+								return resolve(true);
+							}
+						}
+
+					});
+
+					turbo.trace(`📌  you are here → alertNotice.show()`);
+					alertNotice.show();
+
 				}
 
 				turbo.events.off('updater::update', handleUpdateEvent);

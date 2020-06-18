@@ -11,7 +11,7 @@
 		"fontSize": 20,
 		"fontFamily": "SFProDisplay-Semibold",
 	},
-	"top": 60,
+	"top": turbo.HEIGHT_5,
 	"width": turbo.WIDTH_75,
 
 },
