@@ -58,9 +58,9 @@ class Updater {
 	async ensure({ recommended = true, optional = false, openHomePage = false } = {}) {
 		turbo.trace('📦  you are here →  @titanium/updater.ensure');
 
-		turbo.debug(`🦠  recommended: ${JSON.stringify(recommended, null, 2)}`);
-		turbo.debug(`🦠  optional: ${JSON.stringify(optional, null, 2)}`);
-		turbo.debug(`🦠  openHomePage: ${JSON.stringify(openHomePage, null, 2)}`);
+		turbo.debug(`📦  recommended: ${JSON.stringify(recommended, null, 2)}`);
+		turbo.debug(`📦  optional: ${JSON.stringify(optional, null, 2)}`);
+		turbo.debug(`📦  openHomePage: ${JSON.stringify(openHomePage, null, 2)}`);
 
 		return new Promise(async (resolve, reject) => {
 			let result;
@@ -70,8 +70,8 @@ class Updater {
 					.debug(turbo.VERBOSE_MODE)
 					.get();
 			} catch (error) {
-				turbo.trace(`📌  you are here → updater.appInfoPlease.catch`);
-				turbo.debug(`🦠  error: ${JSON.stringify(error, null, 2)}`);
+				turbo.trace(`📦  you are here → updater.appInfoPlease.catch`);
+				turbo.debug(`⛔  error: ${JSON.stringify(error, null, 2)}`);
 
 				if (this.url_fallback) {
 					result = await this.appInfoPlease
@@ -88,7 +88,7 @@ class Updater {
 			turbo.trace('📦  you are here →  @titanium/updater.ensure.then()');
 
 			const appInfo = result.json || {};
-			turbo.debug(`🦠  appInfo: ${JSON.stringify(appInfo, null, 2)}`);
+			turbo.debug(`📦  appInfo: ${JSON.stringify(appInfo, null, 2)}`);
 
 			if (!appInfo.latest) {
 				console.warn(`no app version info found for app: ${this.id} platform: ${this.platform}`);
@@ -99,20 +99,20 @@ class Updater {
 			const meetsRecommended = semver.satisfies(semver.coerce(this.version), appInfo.recommended);
 			const meetsOptional = semver.gte(semver.coerce(this.version), appInfo.latest);
 
-			console.debug(`🦠  currentVersion: ${JSON.stringify(this.version, null, 2)}`);
-			console.debug(`🦠  latestVersion: ${JSON.stringify(appInfo.latest, null, 2)}`);
-			console.debug(`🦠  meetsRequired: ${JSON.stringify(meetsRequired, null, 2)}`);
-			console.debug(`🦠  meetsRecommended: ${JSON.stringify(meetsRecommended, null, 2)}`);
-			console.debug(`🦠  meetsOptional: ${JSON.stringify(meetsOptional, null, 2)}`);
+			console.debug(`📦  currentVersion: ${JSON.stringify(this.version, null, 2)}`);
+			console.debug(`📦  latestVersion: ${JSON.stringify(appInfo.latest, null, 2)}`);
+			console.debug(`📦  meetsRequired: ${JSON.stringify(meetsRequired, null, 2)}`);
+			console.debug(`📦  meetsRecommended: ${JSON.stringify(meetsRecommended, null, 2)}`);
+			console.debug(`📦  meetsOptional: ${JSON.stringify(meetsOptional, null, 2)}`);
 
 			if (meetsRequired) {
-				console.info(`App version ${this.version} meets requirements of: ${appInfo.required}`);
+				console.info(`📦  App version ${this.version} meets requirements of: ${appInfo.required}`);
 
 				if (recommended && meetsRecommended) {
-					console.info(`App version ${this.version} meets recommendations of: ${appInfo.recommended}`);
+					console.info(`📦  App version ${this.version} meets recommendations of: ${appInfo.recommended}`);
 
 					if (optional && meetsOptional) {
-						console.info(`App version ${this.version} meets optional updates of: >=${appInfo.latest}`);
+						console.info(`📦  App version ${this.version} meets optional updates of: >=${appInfo.latest}`);
 						return resolve(true);
 					} else if (! optional) {
 						return resolve(true);
@@ -156,7 +156,7 @@ class Updater {
 
 					});
 
-					turbo.trace(`📌  you are here → alertNotice.show()`);
+					turbo.trace(`📦  you are here → alertNotice.show()`);
 					alertNotice.show();
 					return;
 
@@ -164,7 +164,7 @@ class Updater {
 
 				turbo.events.off('updater::update', handleUpdateEvent);
 				const install_url = release['install-url'];
-				console.debug(`🦠  install_url: ${JSON.stringify(install_url, null, 2)}`);
+				console.debug(`📦  install_url: ${JSON.stringify(install_url, null, 2)}`);
 
 				Alloy.close('update-required');
 				turbo.openLoadingScreen();
@@ -201,7 +201,7 @@ class Updater {
 						alertNotice.addEventListener('click', async event => {
 
 							if (event.index === event.source.cancel) {
-								turbo.trace(`📌  you are here → updater: update cancelled`);
+								turbo.trace(`📦  you are here → updater: update cancelled`);
 								alertNotice.hide();
 								// await Promise.delay(1000);
 
@@ -219,16 +219,16 @@ class Updater {
 						// Ti.Analytics.featureEvent('update:fail');
 						// Alloy.Globals.ACA.logHandledException(e);
 
-						turbo.trace(`📌  you are here → alertNotice.show()`);
+						turbo.trace(`📦  you are here → alertNotice.show()`);
 						alertNotice.show();
 
 						const install_android_apk = () => {
-							turbo.trace(`📌  you are here → updater.install_android_apk()`);
+							turbo.trace(`📦  you are here → updater.install_android_apk()`);
 							setTimeout(() => {
 								let intent = Ti.Android.createIntent({});
 								// intent.putExtraUri('uri', apk.nativePath);
 
-								turbo.debug(`🦠  apk.nativePath: ${JSON.stringify(apk.nativePath, null, 2)}`);
+								turbo.debug(`📦  apk.nativePath: ${JSON.stringify(apk.nativePath, null, 2)}`);
 								intent = Ti.Android.createIntent({
 									action: 'android.intent.action.INSTALL_PACKAGE',
 									// data:   intent.getStringExtra('uri'),
