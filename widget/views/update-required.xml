@@ -1,7 +1,7 @@
 <alloy>
 
 	<script>
-		turbo.trace( '🏷️  you are here → inside @titanium/updater.update-required' );
+		logger.track( '🏷️  you are here → inside @titanium/updater.update-required' );
 
 		$.version_text = '';
 		if ( $.args.version ) {
