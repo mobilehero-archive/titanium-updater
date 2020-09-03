@@ -12,7 +12,7 @@ const OS_ANDROID = !Titanium.App.iOS;
 const moment = require('moment');
 const semver = require('./semver');
 // const turbo = require('/turbo');
-// console.debug(`turbo: ${JSON.stringify(turbo, null, 2)}`);
+// logger.debug(`turbo: ${JSON.stringify(turbo, null, 2)}`);
 const Please = require('@titanium/please');
 
 class Updater {
@@ -102,20 +102,20 @@ class Updater {
 			const meetsRecommended = semver.satisfies(semver.coerce(this.version), appInfo.recommended);
 			const meetsOptional = semver.gte(semver.coerce(this.version), appInfo.latest);
 
-			console.debug(`📦  currentVersion: ${JSON.stringify(this.version, null, 2)}`);
-			console.debug(`📦  latestVersion: ${JSON.stringify(appInfo.latest, null, 2)}`);
-			console.debug(`📦  meetsRequired: ${JSON.stringify(meetsRequired, null, 2)}`);
-			console.debug(`📦  meetsRecommended: ${JSON.stringify(meetsRecommended, null, 2)}`);
-			console.debug(`📦  meetsOptional: ${JSON.stringify(meetsOptional, null, 2)}`);
+			logger.debug(`📦  currentVersion: ${JSON.stringify(this.version, null, 2)}`);
+			logger.debug(`📦  latestVersion: ${JSON.stringify(appInfo.latest, null, 2)}`);
+			logger.debug(`📦  meetsRequired: ${JSON.stringify(meetsRequired, null, 2)}`);
+			logger.debug(`📦  meetsRecommended: ${JSON.stringify(meetsRecommended, null, 2)}`);
+			logger.debug(`📦  meetsOptional: ${JSON.stringify(meetsOptional, null, 2)}`);
 
 			if (meetsRequired) {
-				console.info(`📦  App version ${this.version} meets requirements of: ${appInfo.required}`);
+				logger.info(`📦  App version ${this.version} meets requirements of: ${appInfo.required}`);
 
 				if (recommended && meetsRecommended) {
-					console.info(`📦  App version ${this.version} meets recommendations of: ${appInfo.recommended}`);
+					logger.info(`📦  App version ${this.version} meets recommendations of: ${appInfo.recommended}`);
 
 					if (optional && meetsOptional) {
-						console.info(`📦  App version ${this.version} meets optional updates of: >=${appInfo.latest}`);
+						logger.info(`📦  App version ${this.version} meets optional updates of: >=${appInfo.latest}`);
 						return resolve(true);
 					} else if (! optional) {
 						return resolve(true);
@@ -167,7 +167,7 @@ class Updater {
 
 				turbo.events.off('updater::update', handleUpdateEvent);
 				const install_url = release['install-url'];
-				console.debug(`📦  install_url: ${JSON.stringify(install_url, null, 2)}`);
+				logger.debug(`📦  install_url: ${JSON.stringify(install_url, null, 2)}`);
 
 				Alloy.close('update-required');
 				turbo.openLoadingScreen();
@@ -248,7 +248,7 @@ class Updater {
 
 					} catch (error) {
 
-						console.error(error);
+						logger.error(error);
 
 						const alertNotice = Ti.UI.createAlertDialog({
 							title:       'Auto-update failed',
@@ -289,9 +289,9 @@ class Updater {
 
 		})
 			.catch(error => {
-				console.error('⛔ → Error:  Error occurred in @titanium/updater.ensure()');
-				console.error(error);
-				console.error(`error: ${JSON.stringify(error, null, 2)}`);
+				logger.error('⛔ → Error:  Error occurred in @titanium/updater.ensure()');
+				logger.error(error);
+				logger.error(`error: ${JSON.stringify(error, null, 2)}`);
 				// resolve();
 				// reject(error);
 			});
