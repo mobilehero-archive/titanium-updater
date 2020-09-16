@@ -1,6 +1,6 @@
 {
 	"name": "@titanium/updater",
-	"version": "0.0.39",
+	"version": "0.0.40",
 	"description": "Titanium native mobile widget to check for app updates",
 	"keywords": [
 		"updates",
@@ -38,7 +38,8 @@
 		"lodash": "^4.17.20"
 	},
 	"peerDependencies": {
-		"@titanium/lottie": "^1.0.18"
+		"@titanium/lottie": "^1.0.18",
+		"@geek/logger": "^0.0.1"
 	},
 	"main": "./updater.js",
 	"scripts": {

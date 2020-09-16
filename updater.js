@@ -1,7 +1,8 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable promise/avoid-new */
 
-const logger = require('@geek/logger');
+const logger = require('@geek/logger').createLogger('@geek/updater', { meta: { filename: __filename } });
+
 
 logger.track(`📦  you are here → entering @titanium/updater`);
 
@@ -91,7 +92,7 @@ class Updater {
 			logger.track('📦  you are here →  @titanium/updater.ensure.then()');
 
 			const appInfo = result.json || {};
-			logger.debug(`📦  appInfo: ${JSON.stringify(appInfo, null, 2)}`);
+			logger.verbose(`📦  appInfo: ${JSON.stringify(appInfo, null, 2)}`);
 
 			if (!appInfo.latest) {
 				console.warn(`no app version info found for app: ${this.id} platform: ${this.platform}`);
