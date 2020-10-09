@@ -1,6 +1,6 @@
 {
 	"name": "@titanium/updater",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Titanium native mobile widget to check for app updates",
 	"keywords": [
 		"updates",

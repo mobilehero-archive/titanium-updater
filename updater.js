@@ -1,7 +1,7 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable promise/avoid-new */
 
-const logger = require('@geek/logger').createLogger('@geek/updater', { meta: { filename: __filename } });
+const logger = require('@geek/logger').createLogger('@titanium/updater', { meta: { filename: __filename } });
 
 
 logger.track(`📦  you are here → entering @titanium/updater`);
@@ -71,7 +71,7 @@ class Updater {
 
 			try {
 				result = await this.appInfoPlease
-					.debug(turbo.VERBOSE_MODE)
+					.debug(turbo.API_VERBOSE_MODE)
 					.get();
 			} catch (error) {
 				logger.track(`📦  you are here → updater.appInfoPlease.catch`);
@@ -80,7 +80,7 @@ class Updater {
 				if (this.url_fallback) {
 					result = await this.appInfoPlease
 						.url(this.url_fallback)
-						.debug(turbo.VERBOSE_MODE)
+						.debug(turbo.API_VERBOSE_MODE)
 						.get();
 				} else {
 					throw error;
