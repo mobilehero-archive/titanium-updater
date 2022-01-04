@@ -1,6 +1,6 @@
 {
 	"name": "@titanium/updater",
-	"version": "1.0.1",
+	"version": "1.0.3",
 	"description": "Titanium native mobile widget to check for app updates",
 	"keywords": [
 		"updates",
@@ -12,6 +12,8 @@
 		"android",
 		"native",
 		"appcelerator",
+		"axway-amplify",
+		"api-builder",
 		"brenton-house"
 	],
 	"author": {
@@ -45,7 +47,7 @@
 	"scripts": {
 		"test": "npm install --ignore-scripts && npm run list",
 		"list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
-		"prepublishOnly": "git pull && bump"
+		"prepublishOnly2": "git pull && bump"
 	},
 	"titanium": {
 		"type": "widget",
