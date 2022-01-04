@@ -35,8 +35,8 @@
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"@titanium/eslint-config": "0.0.17",
-		"eslint": "^7.10.0",
+		"@titanium/eslint-config": "0.0.18",
+		"eslint": "^7.11.0",
 		"lodash": "^4.17.20"
 	},
 	"peerDependencies": {
