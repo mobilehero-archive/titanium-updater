@@ -1,6 +1,6 @@
 {
 	"name": "@titanium/updater",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Titanium native mobile widget to check for app updates",
 	"keywords": [
 		"updates",
@@ -33,6 +33,7 @@
 		"type": "git",
 		"url": "github:brentonhouse/titanium-updater"
 	},
+	"homepage": "https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de",
 	"dependencies": {},
 	"devDependencies": {
 		"@titanium/eslint-config": "0.0.18",
@@ -47,7 +48,7 @@
 	"scripts": {
 		"test": "npm install --ignore-scripts && npm run list",
 		"list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
-		"prepublishOnly2": "git pull && bump"
+		"prepublishOnly": "git pull && bump insane"
 	},
 	"titanium": {
 		"type": "widget",
