@@ -1,6 +1,6 @@
 {
 	"name": "@titanium/updater",
-	"version": "1.0.31",
+	"version": "1.0.32",
 	"description": "⭐  Axway Amplify module to check for app updates with Appcelerator Titanium SDK Framework",
 	"keywords": [
 		"updates",
@@ -55,7 +55,7 @@
 		"@titanium/bluebird": "^3.7.30",
 		"@titanium/errors": "^1.0.26",
 		"@titanium/essentials": "^1.0.61",
-		"@titanium/events": "^1.0.39",
+		"@titanium/events": "^1.0.40",
 		"@titanium/eventsource": "^1.0.28",
 		"@titanium/jwt": "^1.0.30",
 		"@titanium/module-copier": "^1.0.35",
